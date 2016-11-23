@@ -29,8 +29,8 @@
 #include "debug.h"
 #include "lmic.h"
 
-#define LED_PORT        GPIOA // use GPIO PA8 (LED4 on IMST, P11/PPS/EXT1_10/GPS6 on Blipper)
-#define LED_PIN         8
+#define LED_PORT        GPIOA // use GPIO PA5 (LED4 on IMST, P11/PPS/EXT1_10/GPS6 on Blipper)
+#define LED_PIN         5
 #define USART_TX_PORT   GPIOA
 #define USART_TX_PIN    9
 #define GPIO_AF_USART1  0x07
@@ -42,7 +42,7 @@ void debug_init () {
 
     // configure USART1 (115200/8N1, tx-only)
     RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
-    hw_cfg_pin(USART_TX_PORT, USART_TX_PIN, GPIOCFG_MODE_ALT|GPIOCFG_OSPEED_40MHz|GPIOCFG_OTYPE_PUPD|GPIOCFG_PUPD_PUP|GPIO_AF_USART1);
+    hw_cfg_pin(USART_TX_PORT, USART_TX_PIN, GPIOCFG_MODE_ALT | GPIOCFG_OSPEED_40MHz | GPIOCFG_OTYPE_PUPD | GPIOCFG_PUPD_PUP | GPIO_AF_USART1);
     USART1->BRR = 277; // 115200
     USART1->CR1 = USART_CR1_UE | USART_CR1_TE; // usart+transmitter enable
 
