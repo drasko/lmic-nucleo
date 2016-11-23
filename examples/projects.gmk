@@ -1,5 +1,5 @@
 # SELECT TOOLCHAIN GNU/IAR/KEIL
-TOOLCHAIN = keil
+TOOLCHAIN = gnu
 
 # EDIT CONFIGURATIONS BELOW TO REFLECT COMPILER INSTALL DIR AND CMSIS INCLUDE DIR 
 
@@ -36,17 +36,18 @@ endif
 
 # GNU TOOLCHAIN
 ifeq (${TOOLCHAIN}, gnu)
-GNU = /opt/arm-gnu-toolchain-4.9.3.475/arm-none-eabi
-CC  = ${GNU}/bin/arm-none-eabi-gcc
-AS  = ${GNU}/bin/arm-none-eabi-as
-LN  = ${GNU}/bin/arm-none-eabi-gcc
-HEX = ${GNU}/bin/arm-none-eabi-objcopy -O ihex
-BIN = ${GNU}/bin/arm-none-eabi-objcopy -O binary
+PREFIX = arm-none-eabi
+CC  = ${PREFIX}-gcc
+AS  = ${PREFIX}-as
+LN  = ${PREFIX}-gcc
+HEX = ${PREFIX}-objcopy -O ihex
+BIN = ${PREFIX}-objcopy -O binary
 
 # OpenOCD
 OPENOCD := /opt/openocd-0.9.0/bin/openocd
 
-CMSIS_INC = ../../stm32/CMSIS/Include
+#CMSIS_INC = ../../stm32/CMSIS/Include
+CMSIS_INC = ../../CMSIS_5/CMSIS/Core/Include
 define CMSIS_MSG
 ERROR: CMSIS Library missing: $(CMSIS_INC)
 ## CMSIS: Cortex Microcontroller Software Interface Standard
@@ -57,7 +58,7 @@ ifeq (,$(wildcard $(CMSIS_INC)))
 $(error $(CMSIS_MSG))
 endif
 
-LINKER_SCRIPT =  ../../stm32/STM32L152VB_FLASH.ld
+LINKER_SCRIPT =  ../../stm32/STM32L152RE_FLASH.ld
 define LNK_SCRIPT_MSG
 ERROR: Linker Script missing: $(LINKER_SCRIPT)
 ## Linker Script can be obtained from the STM32L1xx standard peripherals library
@@ -70,14 +71,15 @@ endif
 INC = $(CMSIS_INC)
 
 CPU    = -mcpu=cortex-m3 -mthumb
-CCOPTS = $(CPU) -c -std=gnu99
+CCOPTS = $(CPU) -c -std=gnu99 -g
 CCOPTS += -fno-common -fmessage-length=0 -fno-builtin -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -MMD -MP
 ASOPTS = $(CPU)
 LNOPTS = $(CPU) -Wl,--gc-sections -T$(LINKER_SCRIPT)
 endif
 
 # LMIC CONFIG
-LMICCFG += -DSTM32L1XX_MD -DCFG_DEBUG -DCFG_eu868 -DCFG_wimod_board -DCFG_sx1272_radio -DCFG_lmic_clib
+#LMICCFG += -DSTM32L1XX_MD -DCFG_DEBUG -DCFG_eu868 -DCFG_wimod_board -DCFG_sx1272_radio -DCFG_lmic_clib
+LMICCFG += -DSTM32L1XX_MD -DCFG_DEBUG -DCFG_eu868 -DCFG_sx1276mb1_board -DCFG_sx1276_radio -DCFG_lmic_clib
 
 LMICDIR  = ../../lmic
 HALDIR   = ../../stm32
