@@ -17,3 +17,6 @@ minicom -D /dev/ttyACM0
 - In `./stm32/debug.c` we can see: `USART1->BRR = 277; // 115200`. So set-up this baud rate in Minicom.
 - According to [this pinout image](https://developer.mbed.org/platforms/ST-Nucleo-L152RE/), UART1_TX is on PA_9 that is on the 11th pin from the top on outer connector (ST extension connector, male, next to inner Arduino connector). So connect your UART RX (the one on PC USB FTDI adpter) to this pin. GND is located near to PA_9, on pin 10 of the most outer connector row.
 
+### Other remarks
+- Antenna	goes to ANT_HF in Europe
+
